@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
 import './App.css';
+import './skeleton/skeleton.css';
+import BookList from './containers/Book';
+import CategoryList from './containers/Category';
+import { createStore } from 'redux';
+import Reducer from './reducers';
+import { toggleModal } from './reducers/AddBookModal';
+import AddBookModal from './containers/Book/AddBookModal';
+import CategoryModal from './containers/Category/CategoryModal';
+import EditBookModal from './containers/Book/EditBookModal';
+
+const store = createStore(Reducer);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <br />
+        <div className="container">
+          <div className="row">
+            <div className="two columns">
+              <CategoryList />
+            </div>
+            <div className="ten columns">
+              <button onClick={() => store.dispatch(toggleModal(true))}>Add Book</button>
+              <BookList />
+            </div>
+          </div>
+        </div>
+        <AddBookModal />
+        <EditBookModal />
+        <CategoryModal />
+      </Provider>
     );
   }
 }
 
 export default App;
+
